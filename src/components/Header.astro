@@ -6,16 +6,44 @@ import { VCenterRow } from './layout/v-center-row'
 import { ThemeToggle } from './theme-toggle'
 ---
 
-<header class="bg-background/25 sticky top-0 z-50 h-18 px-4 backdrop-blur-md">
-  <nav class="grid grid-cols-1 items-center gap-4 lg:grid-cols-4">
+<header class="bg-background/25 sticky top-0 z-40 p-4 backdrop-blur-md">
+  <nav class="flex flex-col gap-4 lg:hidden">
+    <VCenterRow className="justify-between gap-x-4">
+      <VCenterRow className="gap-3">
+        <slot name="small-header-left" />
+
+        <a href="/" class="flex items-center gap-2"
+          ><img
+            src="/favicon.svg"
+            alt={SITE_TITLE}
+            class="aspect-square h-7 w-7 shrink-0"
+          />
+        </a>
+      </VCenterRow>
+      <HelpAutocompleteQuery className="min-w-0 grow" client:only="react" />
+      <VCenterRow className="justify-end gap-4">
+        <ThemeToggle client:only="react" />
+        <slot name="small-header-right" />
+      </VCenterRow>
+    </VCenterRow>
+    <VCenterRow>
+      <slot name="small-header-bottom" />
+    </VCenterRow>
+  </nav>
+
+  <nav class="hidden grid-cols-1 items-center gap-4 lg:grid lg:grid-cols-4">
     <h2 class="text-lg font-bold">
       <a href="/" class="flex items-center gap-2"
-        ><img src="/favicon.svg" alt={SITE_TITLE} class="h-9 w-9" />
+        ><img
+          src="/favicon.svg"
+          alt={SITE_TITLE}
+          class="aspect-square h-9 w-9 shrink-0"
+        />
         {SITE_TITLE}
       </a>
     </h2>
 
-    <HCenterRow className="col-span-2 py-4">
+    <HCenterRow className="col-span-2 hidden lg:flex">
       <HelpAutocompleteQuery className="w-3/4" client:only="react" />
     </HCenterRow>
 

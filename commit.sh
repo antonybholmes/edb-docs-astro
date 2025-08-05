@@ -22,6 +22,6 @@ fi
 pnpm update-version
 #tsx scripts/update-changelog.ts "${msg}" "${type}"
 #pnpm make-changelog-markdown
-#pnpm make-help-toc
+pnpm index
 
 ./base_commit.sh -t "${type}" -m "${msg}" -b dev

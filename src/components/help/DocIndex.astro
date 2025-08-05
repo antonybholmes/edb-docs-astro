@@ -9,7 +9,6 @@ import { VScrollPanel } from '../v-scroll-panel'
 import { DocCrumb } from './doc-crumb'
 
 import type { DocNode } from '@/lib/docs'
-import { HelpMenu } from './help-menu'
 
 interface Props {
   node: DocNode
@@ -56,7 +55,6 @@ const pathChildren: DocNode[][] = []
     slot="main"
   >
     <BaseCol className="px-1">
-      <HelpMenu node={node} tree={topicTree} client:only="react" />
       <VScrollPanel className="hidden lg:flex lg:grow">
         <BaseCol className="hidden justify-start gap-y-4 py-4 text-xs lg:flex">
           <ul>

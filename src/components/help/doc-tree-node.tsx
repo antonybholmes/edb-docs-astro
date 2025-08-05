@@ -86,7 +86,7 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
 
   return (
     <li className="flex flex-col gap-y-0.5 ">
-      <VCenterRow className="h-9 gap-x-1">
+      <VCenterRow className="h-9 gap-x-0.5">
         <span
           className="data-[checked=true]:bg-theme w-1 h-5 rounded-full shrink-0"
           data-checked={isSelected}
@@ -94,7 +94,7 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
 
         <VCenterRow
           className={cn(
-            'justify-between items-center grow shrink-0 rounded-theme h-full gap-x-2',
+            'justify-between items-center grow shrink-0 rounded-theme h-full gap-x-1',
             isSelected
               ? 'bg-muted/70 font-semibold'
               : 'text-foreground/70 hover:font-medium hover:text-foreground'
@@ -103,14 +103,14 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
           {hasChildren ? (
             <button
               data-valid-slug={isValidSlug}
-              className="flex flex-row items-center grow justify-between h-full gap-x-2 pr-2"
+              className="flex flex-row items-center grow justify-between h-full gap-x-2 pr-1"
               onClick={() => {
                 setIsOpen(!isOpen)
 
                 setSelected(node.slug.join('/'))
               }}
               style={{
-                paddingLeft: `${level * 0.5 + 0.5}rem`,
+                paddingLeft: `${level * 0.5 + 0.25}rem`,
               }}
             >
               <span className="flex flex-row items-center justify-start grow">
@@ -131,7 +131,7 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
               href={'/' + node.slug.join('/')}
               className="flex flex-row items-center justify-start grow h-full"
               style={{
-                paddingLeft: `${level * 0.25 + 0.5}rem`,
+                paddingLeft: `${level * 0.5 + 0.5}rem`,
               }}
             >
               {name}

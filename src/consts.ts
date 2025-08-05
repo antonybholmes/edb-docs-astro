@@ -3,5 +3,6 @@
 
 export const SITE_TITLE = 'Experiments'
 export const SITE_DESCRIPTION = 'Experiment Docs'
+export const COPYRIGHT = 'Antony Holmes'
 
 export const TEXT_SEARCH = 'Search'

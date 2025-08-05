@@ -23,6 +23,10 @@
 
   --radius-theme: var(--radius-theme);
   --radius-menu: var(--radius-menu);
+
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-alert: 400;
 }
 
 :root {
@@ -42,6 +46,18 @@
   --color-muted: oklch(0.44 0 0);
   --color-theme: oklch(80.9% 0.105 251.813);
   --color-border: rgb(115 115 115);
+}
+
+.trans-500 {
+  @apply duration-500 ease-in-out;
+}
+
+.trans-color {
+  @apply transition-colors duration-300 ease-in-out;
+}
+
+.trans-opacity {
+  @apply transition-opacity duration-300 ease-in-out;
 }
 
 .trans-transform {
@@ -81,7 +97,7 @@ textarea {
   content: attr(aria-label);
 }
 
-.markdown .markdown {
+.markdown {
   h1 {
     @apply font-bold;
   }

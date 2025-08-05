@@ -27,7 +27,11 @@ const cls = cn(BODY_CLS, bg)
   </head>
 
   <body class={cn(cls, className)}>
-    <Header tab={tab} />
+    <Header tab={tab}>
+      <slot name="small-header-left" slot="small-header-left" />
+      <slot name="small-header-right" slot="small-header-right" />
+      <slot name="small-header-bottom" slot="small-header-bottom" />
+    </Header>
 
     <slot name="main" />
     <!-- <slot name="footer" /> -->

@@ -8,7 +8,7 @@ authors:
 added: '2025-07-01'
 ---
 
-## Introduction
+# Analyzing and plotting biological data
 
 Matcalc allows you to analyse tabular data with a focus on utilities for the biological sciences. It is designed to complement work you might do in Excel by offering features normally reserved for programming languages such as Python or R.
 

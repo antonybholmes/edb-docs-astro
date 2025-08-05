@@ -34,7 +34,7 @@ export function VScrollPanel({
     <div
       ref={ref}
       className={cn(
-        'relative overflow-y-auto overflow-x-hidden custom-scrollbar min-w-0 min-h-0  grow',
+        'relative overflow-y-auto overflow-x-hidden custom-scrollbar min-w-0 min-h-0 grow',
         className
       )}
       {...props}

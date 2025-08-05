@@ -61,7 +61,7 @@ export function TableOfContents({
 
   return (
     <nav className={cn('flex flex-col gap-y-4', className)}>
-      <span className="text-sm font-semibold">{title}</span>
+      {title && <span className="text-sm font-semibold">{title}</span>}
       <ul className="text-sm flex flex-col gap-y-3  text-foreground/70">
         {headings.map(({ id, text, level }) => (
           <li key={id} data-active={activeId === id} className="">
