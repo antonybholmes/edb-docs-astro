@@ -1,0 +1,37 @@
+---
+import BaseHead from '@components/BaseHead.astro'
+import Footer from '@components/Footer.astro'
+import Header from '@components/Header.astro'
+import { cn } from '@lib/shadcn-utils'
+
+import { type ILayoutProps } from '@interfaces/layout-props'
+
+interface Props extends ILayoutProps {}
+
+const BODY_CLS = 'margin-0 min-h-screen text-foreground flex flex-col grow'
+
+const {
+  title = '',
+  description = '',
+  bg = 'bg-body',
+  tab,
+  className,
+} = Astro.props
+const cls = cn(BODY_CLS, bg)
+---
+
+<html lang="en" class={cls}>
+  <head>
+    <BaseHead title={title} description={description} />
+    <slot name="head" />
+  </head>
+
+  <body class={cn(cls, className)}>
+    <Header tab={tab} />
+
+    <slot name="main" />
+    <!-- <slot name="footer" /> -->
+
+    <Footer />
+  </body>
+</html>

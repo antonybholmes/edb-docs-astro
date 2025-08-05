@@ -1,0 +1,80 @@
+---
+import { type CollectionEntry } from 'astro:content'
+
+import { MarkdownContent } from '@components/markdown-content'
+import BaseLayout from '@layouts/BaseLayout.astro'
+
+import { BaseCol } from '@layout/base-col'
+import { render } from 'astro:content'
+
+import type { DocNode } from '@/lib/docs'
+import { HCenterCol } from '../layout/h-center-col'
+import { TableOfContents } from '../toc'
+import { VScrollPanel } from '../v-scroll-panel'
+import { DocTreeNode } from './doc-tree-node'
+
+interface Props {
+  post: CollectionEntry<'docs'>
+  rootNode: DocNode
+  slug: string[]
+  //topicTree: ITopicTree
+}
+
+const { post, rootNode, slug } = Astro.props
+const { Content, headings } = await render(post)
+
+//const filePath = `/${path.join('/')}`
+
+// const stack = topicTree.children.toReversed().map(t => ({ level: 0, tree: t }))
+
+// const flatTree = []
+
+// while (stack.length > 0) {
+//   const { level, tree } = stack.pop()!
+
+//   flatTree.push({ name: tree.name, level })
+
+//   for (const t of tree.children.toReversed()) {
+//     stack.push({ level: level + 1, tree: t })
+//   }
+// }
+
+// for this path, find the topic children
+
+// let tm = topicTree
+// for (const p of node.path) {
+//   tm = tm.children.find((t) => t.title === p)!
+//   pathChildren.push(tm.children)
+// }
+---
+
+<BaseLayout title={post.data.title} bg="bg-background">
+  <HCenterCol slot="main" className="mt-4">
+    <BaseCol className="grow gap-y-4 px-4 xl:w-7/10 xl:px-0">
+      <div class="grid grow grid-cols-1 lg:grid-cols-5 lg:gap-x-8">
+        <aside class="col-span-1 hidden flex-col lg:flex">
+          <VScrollPanel>
+            <DocTreeNode
+              node={rootNode}
+              slug={slug}
+              client:only="react"
+              className="text-sm"
+            />
+          </VScrollPanel>
+        </aside>
+
+        <MarkdownContent className="docs col-span-3 flex grow flex-col text-sm">
+          <Content />
+        </MarkdownContent>
+
+        <aside class="col-span-1 hidden flex-col lg:flex">
+          <TableOfContents
+            title="On This Page"
+            client:only="react"
+            className="sticky top-24"
+          />
+        </aside>
+      </div>
+    </BaseCol>
+  </HCenterCol>
+</BaseLayout>

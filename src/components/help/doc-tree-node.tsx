@@ -1,0 +1,151 @@
+import type { IClassProps } from '@/interfaces/class-props'
+import type { DocNode } from '@/lib/docs'
+import type { IChildrenProps } from '@interfaces/children-props'
+import { cn } from '@lib/shadcn-utils'
+import { createContext, useContext, useState } from 'react'
+import { ChevronRightIcon } from '../icons/chevron-right-icon'
+import { VCenterRow } from '../layout/v-center-row'
+
+const DocNodeContext = createContext<{
+  selected: string
+  setSelected: (selected: string) => void
+
+  slug: string[]
+}>({
+  selected: '',
+  setSelected: () => {},
+
+  slug: [],
+})
+
+interface IDocNodeProps extends IChildrenProps {
+  selected: string
+  setSelected: (selected: string) => void
+
+  slug: string[]
+}
+
+export const DocNodeProvider = ({
+  selected,
+  setSelected,
+
+  slug,
+  children,
+}: IDocNodeProps) => {
+  // useEffect(() => {
+  //   // sync internal value to external if it changes
+  //   setSelected(selected)
+  // }, [selected])
+
+  return (
+    <DocNodeContext.Provider value={{ selected, setSelected, slug }}>
+      {children}
+    </DocNodeContext.Provider>
+  )
+}
+
+export function DocTreeNode({
+  node,
+  slug,
+  level = 0,
+  className,
+}: IClassProps & {
+  node: DocNode
+  slug: string[]
+  level?: number
+}) {
+  const [selected, setSelected] = useState(slug.join('/'))
+
+  return (
+    <DocNodeProvider selected={selected} setSelected={setSelected} slug={slug}>
+      <ul className={cn('flex flex-col', className)}>
+        {node.children.map((child, index) => (
+          <BaseDocTreeNode key={index} node={child} level={level} />
+        ))}
+      </ul>
+    </DocNodeProvider>
+  )
+}
+
+function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
+  const { selected, setSelected, slug } = useContext(DocNodeContext)
+  const hasChildren = node.children && node.children.length > 0
+
+  // auto determine which nodes are open by comparing the path at each level
+  // with the node path at the same level. If they mirror each other, keep
+  // all the nodes open
+  const [isOpen, setIsOpen] = useState(true) //node.slug[level] === slug[level])
+
+  const name = node.title // .name.replace(/[\_\-]/g, ' ')
+
+  const isSelected = selected === node.slug.join('/')
+
+  //const slug = getSlug(node.path.join('/'))
+
+  const isValidSlug = true //validSlugs.has(slug)
+
+  return (
+    <li className="flex flex-col gap-y-0.5 ">
+      <VCenterRow className="h-9 gap-x-1">
+        <span
+          className="data-[checked=true]:bg-theme w-1 h-5 rounded-full shrink-0"
+          data-checked={isSelected}
+        />
+
+        <VCenterRow
+          className={cn(
+            'justify-between items-center grow shrink-0 rounded-theme h-full gap-x-2',
+            isSelected
+              ? 'bg-muted/70 font-semibold'
+              : 'text-foreground/70 hover:font-medium hover:text-foreground'
+          )}
+        >
+          {hasChildren ? (
+            <button
+              data-valid-slug={isValidSlug}
+              className="flex flex-row items-center grow justify-between h-full gap-x-2 pr-2"
+              onClick={() => {
+                setIsOpen(!isOpen)
+
+                setSelected(node.slug.join('/'))
+              }}
+              style={{
+                paddingLeft: `${level * 0.5 + 0.5}rem`,
+              }}
+            >
+              <span className="flex flex-row items-center justify-start grow">
+                {name}
+              </span>
+
+              <VCenterRow className="justify-center w-4">
+                <ChevronRightIcon
+                  className="trans-transform"
+                  style={{
+                    transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                  }}
+                />
+              </VCenterRow>
+            </button>
+          ) : (
+            <a
+              href={'/' + node.slug.join('/')}
+              className="flex flex-row items-center justify-start grow h-full"
+              style={{
+                paddingLeft: `${level * 0.25 + 0.5}rem`,
+              }}
+            >
+              {name}
+            </a>
+          )}
+        </VCenterRow>
+      </VCenterRow>
+      {node && node.children && isOpen && (
+        <ul className="flex flex-col gap-y-0.5">
+          {node.children.map((child, index) => (
+            <BaseDocTreeNode key={index} node={child} level={level + 1} />
+          ))}
+        </ul>
+      )}
+    </li>
+  )
+}
