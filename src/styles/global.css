@@ -44,6 +44,10 @@
   --color-border: rgb(115 115 115);
 }
 
+.trans-transform {
+  @apply transition-transform duration-300 ease-in-out;
+}
+
 h1,
 h2,
 h3,
@@ -138,7 +142,7 @@ textarea {
   }
 
   h3 {
-    @apply pb-1;
+    @apply mt-2 mb-1;
   }
 
   ol,

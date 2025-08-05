@@ -53,11 +53,11 @@ export function ThemeToggle() {
   function getIcon(theme: Theme) {
     switch (theme) {
       case 'light':
-        return <SunIcon className="w-6" />
+        return <SunIcon className="w-5" />
       case 'dark':
-        return <MoonIcon className="w-6" />
+        return <MoonIcon className="w-5" />
       default:
-        return <ComputerIcon className="w-6 -scale-x-100" />
+        return <ComputerIcon className="w-5 -scale-x-100" />
     }
   }
 
