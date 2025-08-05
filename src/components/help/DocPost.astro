@@ -7,6 +7,8 @@ import BaseLayout from '@layouts/BaseLayout.astro'
 import { render } from 'astro:content'
 
 import type { DocNode } from '@/lib/docs'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
+import { BaseCol } from '../layout/base-col'
 import { HCenterCol } from '../layout/h-center-col'
 import { TableOfContents } from '../toc'
 import { DocDrawer } from './doc-drawer'
@@ -17,10 +19,12 @@ interface Props {
   post: CollectionEntry<'docs'>
   rootNode: DocNode
   slug: string[]
+  nextSlug?: { slug: string; title: string }
+  prevSlug?: { slug: string; title: string }
   //topicTree: ITopicTree
 }
 
-const { post, rootNode, slug } = Astro.props
+const { post, rootNode, slug, nextSlug, prevSlug } = Astro.props
 const { Content, headings } = await render(post)
 
 //const filePath = `/${path.join('/')}`
@@ -73,9 +77,48 @@ const { Content, headings } = await render(post)
         </div>
       </aside>
 
-      <MarkdownContent className="docs col-span-3 flex grow flex-col text-sm">
-        <Content />
-      </MarkdownContent>
+      <BaseCol className="col-span-3 grow gap-y-8">
+        <MarkdownContent className="docs flex grow flex-col text-sm">
+          <Content />
+        </MarkdownContent>
+
+        <div
+          class="border-border grid grid-cols-1 gap-4 border-t pt-8 md:grid-cols-2 lg:items-center"
+        >
+          {
+            prevSlug && (
+              <a
+                href={`/${prevSlug.slug}`}
+                class="flex flex-row items-center justify-center gap-4 md:justify-start"
+              >
+                <ArrowLeft className="w-4 hidden md:block" strokeWidth={3} />
+
+                <span class="text-center md:text-left">
+                  <span class="text-foreground/70 text-sm">Previous</span>
+                  <br />
+                  <span class="text-xl">{prevSlug.title}</span>
+                </span>
+              </a>
+            )
+          }
+          {
+            nextSlug && (
+              <a
+                href={`/${nextSlug.slug}`}
+                class="flex flex-row items-center justify-center gap-4 md:justify-end"
+              >
+                <span class="text-center md:text-right">
+                  <span class="text-foreground/70 text-sm">Next</span>
+                  <br />
+                  <span class="text-xl">{nextSlug.title}</span>
+                </span>
+
+                <ArrowRight className="w-4 hidden md:block" strokeWidth={3} />
+              </a>
+            )
+          }
+        </div>
+      </BaseCol>
 
       <aside class="col-span-1 hidden flex-col lg:flex">
         <TableOfContents
@@ -85,5 +128,5 @@ const { Content, headings } = await render(post)
         />
       </aside>
     </div>
-  </HCenterCol>
-</BaseLayout>
+  </HCenterCol></BaseLayout
+>

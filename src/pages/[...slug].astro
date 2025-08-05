@@ -4,19 +4,41 @@ import { buildNodeTree, DOCS_DIR, type DocNode } from '@/lib/docs'
 import { getCollection, type CollectionEntry } from 'astro:content'
 
 export async function getStaticPaths() {
-  const rootNode = await buildNodeTree(DOCS_DIR)
+  const [rootNode, orderedSlugs] = await buildNodeTree(DOCS_DIR)
+
+  console.log(orderedSlugs)
 
   const posts = await getCollection('docs')
-  return posts.map((post) => ({
-    params: { slug: post.id },
-    props: { post, rootNode },
-  }))
+  return posts.map((post) => {
+    console.log(post.id)
+
+    const idx = orderedSlugs.findIndex((s) => s.slug === post.id)
+
+    const nextSlug = orderedSlugs[idx + 1]
+    const prevSlug = orderedSlugs[idx - 1]
+
+    return {
+      params: { slug: post.id },
+      props: { post, rootNode, nextSlug, prevSlug },
+    }
+  })
 }
 
-type Props = { post: CollectionEntry<'docs'>; rootNode: DocNode }
+type Props = {
+  post: CollectionEntry<'docs'>
+  rootNode: DocNode
+  nextSlug?: { slug: string; title: string }
+  prevSlug?: { slug: string; title: string }
+}
 
 const { slug } = Astro.params
-const { post, rootNode } = Astro.props
+const { post, rootNode, nextSlug, prevSlug } = Astro.props
 ---
 
-<DocPost post={post} rootNode={rootNode} slug={slug.split('/')} />
+<DocPost
+  post={post}
+  rootNode={rootNode}
+  slug={slug.split('/')}
+  nextSlug={nextSlug}
+  prevSlug={prevSlug}
+/>

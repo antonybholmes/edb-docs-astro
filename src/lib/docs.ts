@@ -23,7 +23,9 @@ export function sortNode(node: DocNode) {
   })
 }
 
-export async function buildNodeTree(rootDir: string): Promise<DocNode> {
+export async function buildNodeTree(
+  rootDir: string
+): Promise<[DocNode, { slug: string; title: string }[]]> {
   const files = await globby(`${rootDir}/**/*.md`)
 
   console.log(files)
@@ -101,7 +103,7 @@ export async function buildNodeTree(rootDir: string): Promise<DocNode> {
     })
   }
 
-  const stack = [rootNode]
+  let stack = [rootNode]
 
   while (stack.length > 0) {
     const node = stack.pop()!
@@ -109,5 +111,17 @@ export async function buildNodeTree(rootDir: string): Promise<DocNode> {
     stack.push(...node.children)
   }
 
-  return rootNode
+  const orderedSlugs: { slug: string; title: string }[] = []
+
+  stack = [rootNode]
+
+  while (stack.length > 0) {
+    const node = stack.pop()!
+    if (node.type === 'article') {
+      orderedSlugs.push({ slug: node.slug.join('/'), title: node.title })
+    }
+    stack.push(...node.children.toReversed())
+  }
+
+  return [rootNode, orderedSlugs]
 }
