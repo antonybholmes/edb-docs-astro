@@ -9,7 +9,8 @@
     "prebuild": "pnpm index",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "update-version": "tsx scripts/update-version.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.3",
