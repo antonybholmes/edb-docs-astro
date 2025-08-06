@@ -1,10 +1,12 @@
 ---
 title: 'Gene Expression'
 weight: 30
-type: 'article'
 authors:
   - 'Antony Holmes'
 added: '2025-07-01'
+keywords:
+  - 'matcalc'
+  - 'gene expression'
 ---
 
 # Analysis of Gene Expression Data

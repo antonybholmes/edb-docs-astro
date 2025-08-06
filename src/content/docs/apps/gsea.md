@@ -1,14 +1,13 @@
 ---
 title: 'GSEA'
 weight: 30
-type: 'article'
 description: 'GSEA allows you to reformat GSEA data from the Broad GSEA tool.'
 authors:
   - 'Antony Holmes'
-added: '2025-07-01'  
+added: '2025-07-01'
 ---
 
-## Introduction
+# Creating Better GSEA Plots
 
 The GSEA app allows you to reformat GSEA data from the Broad GSEA tool. It can create cleaner GSEA plots as SVG making them more suitable for publication.
 

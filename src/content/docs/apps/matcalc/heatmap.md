@@ -1,13 +1,16 @@
 ---
 title: 'Heatmap'
 weight: 20
-type: 'article'
 authors:
   - 'Antony Holmes'
 added: '2025-07-01'
+keywords:
+  - 'matcalc'
+  - 'heatmap'
+  - 'visualization'
 ---
 
-## Introduction
+# Creating Heatmaps
 
 Heatmaps allow you to represent tabular data graphically with color.
 

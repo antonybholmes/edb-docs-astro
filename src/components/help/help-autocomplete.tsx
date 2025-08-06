@@ -11,9 +11,10 @@ import { Autocomplete } from '../autocomplete'
 import { SearchIcon } from '../icons/search-icon'
 
 export interface SearchIndexNode {
-  t: string
-  c: string
-  u: string
+  t: string // title
+  d: string // description
+  w: string // words for fuzzy search
+  u: string // url
 }
 
 function HelpAutocomplete({ className }: IClassProps) {
@@ -36,8 +37,9 @@ function HelpAutocomplete({ className }: IClassProps) {
     //logger.log('Creating search index', data)
 
     return new Fuse(data, {
-      keys: ['t', 'c'], // Fields to search
-      threshold: 0.3, // Fuzzy match level
+      keys: ['t', 'd', 'w'], // Fields to search
+      threshold: 0.4, // Fuzzy match level
+      ignoreLocation: true,
     })
   }, [data])
 
@@ -59,11 +61,16 @@ function HelpAutocomplete({ className }: IClassProps) {
         <li key={li}>
           <a
             href={item.u}
-            className="hover:bg-muted/50 focus-visible:bg-muted/50 outline-none h-8 flex flex-row items-center px-3 gap-x-2"
+            className="hover:bg-muted/50 focus-visible:bg-muted/50 outline-none h-9  flex flex-row items-center px-3 gap-x-2"
             aria-label={item.t}
           >
-            <SearchIcon />
-            <span>{item.t}</span>
+            <SearchIcon className="shrink-0" />
+
+            <span className="font-medium">{item.t}</span>
+
+            <span className="text-xs text-foreground/50 truncate">
+              {item.d}
+            </span>
           </a>
         </li>
       ))}

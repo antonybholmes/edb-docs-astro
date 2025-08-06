@@ -3,8 +3,12 @@ import { useEffect, useState } from 'react'
 import { ComputerIcon } from '@icons/computer'
 import { MoonIcon } from '@icons/moon-icon'
 import { SunIcon } from '@icons/sun'
+import { VCenterRow } from './layout/v-center-row'
 
 type Theme = 'light' | 'dark' | 'system'
+
+const BUTTON_CLS =
+  'rounded-full w-7 h-7 aspect-square shrink-0 data-[active=true]:bg-muted flex items-center justify-center opacity-70 hover:opacity-100 focus-visible:opacity-100 data-[active=true]:opacity-100'
 
 function getSystemTheme() {
   window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
@@ -68,13 +72,47 @@ export function ThemeToggle() {
   // }
 
   return (
-    <button
-      onClick={cycleTheme}
-      aria-label="Toggle theme"
-      title="Toggle theme"
-      className="justify-center fill-foreground cursor-pointer"
-    >
-      {getIcon(theme)}
-    </button>
+    <>
+      {/* <Button
+        variant="muted-light"
+        size="icon"
+        onClick={cycleTheme}
+        aria-label="Toggle theme"
+        title="Toggle theme"
+        className="lg:hidden justify-center fill-foreground cursor-pointer"
+      >
+        {getIcon(theme)}
+      </Button> */}
+
+      <VCenterRow className="border border-border rounded-full overflow-hidden p-0.5">
+        <button
+          onClick={() => clickTheme('light')}
+          className={BUTTON_CLS}
+          data-active={theme === 'light'}
+          title="Light theme"
+          aria-label="Set theme to light"
+        >
+          <SunIcon className="w-4" />
+        </button>
+        <button
+          onClick={() => clickTheme('dark')}
+          className={BUTTON_CLS}
+          data-active={theme === 'dark'}
+          title="Dark theme"
+          aria-label="Set theme to dark"
+        >
+          <MoonIcon className="w-4" />
+        </button>
+        <button
+          onClick={() => clickTheme('system')}
+          className={BUTTON_CLS}
+          data-active={theme === 'system'}
+          title="System theme"
+          aria-label="Set theme to system"
+        >
+          <ComputerIcon className="w-4 -scale-x-100" />
+        </button>
+      </VCenterRow>
+    </>
   )
 }

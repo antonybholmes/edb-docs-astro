@@ -62,12 +62,12 @@ export function TableOfContents({
   return (
     <nav className={cn('flex flex-col gap-y-4', className)}>
       {title && <span className="text-sm font-semibold">{title}</span>}
-      <ul className="text-sm flex flex-col gap-y-3  text-foreground/70">
+      <ul className="text-sm flex flex-col gap-y-3 text-foreground/70">
         {headings.map(({ id, text, level }) => (
           <li key={id} data-active={activeId === id} className="">
             <button
               data-active={activeId === id}
-              className="w-full text-left hover:text-theme hover:underline data-[active=true]:font-medium data-[active=true]:text-theme "
+              className="w-full text-left hover:text-foreground data-[active=true]:font-semibold data-[active=true]:text-theme cursor-pointer"
               onClick={() =>
                 document
                   .getElementById(id)

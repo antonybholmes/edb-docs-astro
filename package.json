@@ -6,7 +6,6 @@
     "predev": "pnpm index",
     "dev": "astro dev",
     "index": "tsx scripts/generate-search-index.ts",
-    "prebuild": "pnpm index",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",

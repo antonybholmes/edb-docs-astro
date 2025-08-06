@@ -7,9 +7,10 @@ import BaseLayout from '@layouts/BaseLayout.astro'
 import { render } from 'astro:content'
 
 import type { DocNode } from '@/lib/docs'
+import { cn } from '@/lib/shadcn-utils'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
+import Footer from '../Footer.astro'
 import { BaseCol } from '../layout/base-col'
-import { HCenterCol } from '../layout/h-center-col'
 import { TableOfContents } from '../toc'
 import { DocDrawer } from './doc-drawer'
 import { DocTreeNode } from './doc-tree-node'
@@ -23,6 +24,11 @@ interface Props {
   prevSlug?: { slug: string; title: string }
   //topicTree: ITopicTree
 }
+
+const LINK_CLS = 'flex flex-row items-center gap-4 group'
+
+const ARROW_CLS =
+  'w-4 opacity-50 group-hover:opacity-100 group-focus-visible:opacity-100 trans-opacity'
 
 const { post, rootNode, slug, nextSlug, prevSlug } = Astro.props
 const { Content, headings } = await render(post)
@@ -62,75 +68,72 @@ const { Content, headings } = await render(post)
 
   <TocMenu slot="small-header-bottom" client:only="react" />
 
-  <HCenterCol slot="main" className="mt-4 min-h-screen">
-    <div
-      class="grid w-full grow grid-cols-1 p-4 lg:w-4/5 lg:grid-cols-5 lg:gap-x-8"
+  <Fragment slot="main">
+    <aside
+      class="fixed top-20 bottom-25 left-[1%] hidden w-1/5 overflow-x-hidden overflow-y-auto lg:block xl:left-[10%] xl:w-1/6"
     >
-      <aside class="col-span-1 hidden flex-col lg:flex">
-        <div class="sticky top-28">
-          <DocTreeNode
-            node={rootNode}
-            slug={slug}
-            client:only="react"
-            className="text-sm"
-          />
-        </div>
-      </aside>
+      <DocTreeNode
+        node={rootNode}
+        slug={slug}
+        client:only="react"
+        className="text-sm"
+      />
+    </aside>
 
-      <BaseCol className="col-span-3 grow gap-y-8">
-        <MarkdownContent className="docs flex grow flex-col text-sm">
-          <Content />
-        </MarkdownContent>
+    <BaseCol
+      className="mx-auto mt-8 min-h-screen w-9/10 gap-y-8 lg:w-1/2 xl:w-2/5"
+    >
+      <MarkdownContent className="docs flex grow flex-col text-sm">
+        <Content />
+      </MarkdownContent>
 
-        <div
-          class="border-border grid grid-cols-1 gap-4 border-t pt-8 md:grid-cols-2 lg:items-center"
-        >
-          <div>
-            {
-              prevSlug && (
-                <a
-                  href={`/${prevSlug.slug}`}
-                  class="flex flex-row items-center justify-center gap-4 md:justify-start"
-                >
-                  <ArrowLeft className="w-4 hidden md:block" strokeWidth={3} />
+      <div class="hidden grid-cols-1 gap-4 pt-8 md:grid md:grid-cols-2">
+        <div>
+          {
+            prevSlug && (
+              <a href={`/${prevSlug.slug}`} class={LINK_CLS}>
+                <ArrowLeft className={ARROW_CLS} strokeWidth={3} />
 
-                  <span class="text-center md:text-left">
-                    <span class="text-foreground/70 text-sm">Previous</span>
-                    <br />
-                    <span class="text-xl">{prevSlug.title}</span>
+                <span class="text-left">
+                  <span class="trans-opacity text-sm opacity-50 group-hover:opacity-100 group-focus-visible:opacity-100">
+                    Previous
                   </span>
-                </a>
-              )
-            }
-          </div>
-          <div>
-            {
-              nextSlug && (
-                <a
-                  href={`/${nextSlug.slug}`}
-                  class="flex flex-row items-center justify-center gap-4 md:justify-end"
-                >
-                  <span class="text-center md:text-right">
-                    <span class="text-foreground/70 text-sm">Next</span>
-                    <br />
-                    <span class="text-xl">{nextSlug.title}</span>
-                  </span>
-
-                  <ArrowRight className="w-4 hidden md:block" strokeWidth={3} />
-                </a>
-              )
-            }
-          </div>
+                  <br />
+                  <span class="text-xl font-medium">{prevSlug.title}</span>
+                </span>
+              </a>
+            )
+          }
         </div>
-      </BaseCol>
+        <div>
+          {
+            nextSlug && (
+              <a
+                href={`/${nextSlug.slug}`}
+                class={cn(LINK_CLS, 'justify-end text-right')}
+              >
+                <span class="text-right">
+                  <span class="trans-opacity text-sm opacity-50 group-hover:opacity-100 group-focus-visible:opacity-100">
+                    Next
+                  </span>
+                  <br />
+                  <span class="text-xl font-medium">{nextSlug.title}</span>
+                </span>
 
-      <aside class="col-span-1 hidden flex-col lg:flex">
-        <TableOfContents
-          title="On This Page"
-          client:only="react"
-          className="sticky top-28"
-        />
-      </aside>
-    </div>
-  </HCenterCol></BaseLayout
->
+                <ArrowRight className={ARROW_CLS} strokeWidth={3} />
+              </a>
+            )
+          }
+        </div>
+      </div>
+
+      <Footer />
+    </BaseCol>
+
+    <aside
+      class="fixed top-20 right-[1%] bottom-25 hidden w-1/5 overflow-x-hidden overflow-y-auto lg:block xl:right-[10%] xl:w-1/6"
+    >
+      <TableOfContents title="On This Page" client:only="react" />
+    </aside>
+  </Fragment>
+</BaseLayout>

@@ -1,11 +1,15 @@
 ---
-title: 'Matcalc'
+title: 'Analysis'
 weight: 10
-type: 'article'
-description: 'Tools for analyzing and plotting gene expression and other biological data.'
+description: 'Matcalc allows you to analyse and plot gene expression and other biological data.'
 authors:
   - 'Antony Holmes'
 added: '2025-07-01'
+keywords:
+  - 'matcalc'
+  - 'analysis'
+  - 'gene expression'
+  - 'plotting'
 ---
 
 # Analyzing and plotting biological data

@@ -16,6 +16,11 @@ const docs = defineCollection({
         .string()
         .transform<Date>((str) => parseISO(str))
         .optional(),
+
+      weight: z.number().default(0),
+      slug: z.array(z.string()).default([]),
+      authors: z.array(z.string()).optional(),
+      keywords: z.array(z.string()).optional(),
     }),
 })
 

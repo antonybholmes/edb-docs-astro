@@ -1,6 +1,5 @@
 ---
 import BaseHead from '@components/BaseHead.astro'
-import Footer from '@components/Footer.astro'
 import Header from '@components/Header.astro'
 import { cn } from '@lib/shadcn-utils'
 
@@ -36,6 +35,6 @@ const cls = cn(BODY_CLS, bg)
     <slot name="main" />
     <!-- <slot name="footer" /> -->
 
-    <Footer />
+    <!-- <Footer /> -->
   </body>
 </html>

@@ -74,15 +74,13 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
   // auto determine which nodes are open by comparing the path at each level
   // with the node path at the same level. If they mirror each other, keep
   // all the nodes open
-  const [isOpen, setIsOpen] = useState(true) //node.slug[level] === slug[level])
+  const [isOpen, setIsOpen] = useState(node.slug[level] === slug[level])
 
   const name = node.title // .name.replace(/[\_\-]/g, ' ')
 
   const isSelected = selected === node.slug.join('/')
 
   //const slug = getSlug(node.path.join('/'))
-
-  const isValidSlug = true //validSlugs.has(slug)
 
   return (
     <li className="flex flex-col gap-y-0.5 ">
@@ -97,12 +95,11 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
             'justify-between items-center grow shrink-0 rounded-theme h-full gap-x-1',
             isSelected
               ? 'bg-muted/70 font-semibold'
-              : 'text-foreground/70 hover:font-medium hover:text-foreground'
+              : 'text-foreground/70 hover:text-foreground'
           )}
         >
           {hasChildren ? (
             <button
-              data-valid-slug={isValidSlug}
               className="flex flex-row items-center grow justify-between h-full gap-x-2 pr-1"
               onClick={() => {
                 setIsOpen(!isOpen)

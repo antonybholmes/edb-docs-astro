@@ -72,7 +72,7 @@ export function TocMenu() {
       </Popover>
 
       {activeId && (
-        <span className="text-sm text-foreground/70">
+        <span className="text-sm text-foreground/70 truncate">
           <strong>{activeId}</strong>
         </span>
       )}

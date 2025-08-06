@@ -1,7 +1,6 @@
 ---
 title: 'Pathway'
 weight: 20
-type: 'article'
 authors:
   - 'Antony Holmes'
 added: '2025-07-01'

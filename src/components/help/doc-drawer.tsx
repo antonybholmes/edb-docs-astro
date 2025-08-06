@@ -42,7 +42,7 @@ export function DocDrawer({ node, slug }: { node: DocNode; slug: string[] }) {
     <Drawer onOpenChange={setOpen} open={open}>
       <DrawerTrigger asChild>
         <button
-          className="shrink-0 grow-0 cursor-pointer"
+          className="shrink-0 grow-0 cursor-pointer w-8 h-8 flex items-center justify-center"
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           title="Open docs menu"
@@ -58,9 +58,9 @@ export function DocDrawer({ node, slug }: { node: DocNode; slug: string[] }) {
           'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-left-8'
         )}
       >
-        <VCenterRow className="justify-end">
+        <VCenterRow className="justify-start">
           <DrawerClose asChild>
-            <button className="opacity-50 hover:opacity-100 focus-visible:opacity-100 trans-opacity">
+            <button className="opacity-50 hover:opacity-100 focus-visible:opacity-100 trans-opacity w-8 h-8 flex items-center justify-center">
               <CloseIcon className="w-6 h-6" />
             </button>
           </DrawerClose>
