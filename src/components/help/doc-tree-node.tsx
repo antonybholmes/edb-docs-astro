@@ -9,26 +9,27 @@ import { VCenterRow } from '../layout/v-center-row'
 const DocNodeContext = createContext<{
   selected: string
   setSelected: (selected: string) => void
-
+  expanded: boolean
   slug: string[]
 }>({
   selected: '',
   setSelected: () => {},
 
   slug: [],
+  expanded: false,
 })
 
 interface IDocNodeProps extends IChildrenProps {
   selected: string
   setSelected: (selected: string) => void
-
+  expanded: boolean
   slug: string[]
 }
 
 export const DocNodeProvider = ({
   selected,
   setSelected,
-
+  expanded,
   slug,
   children,
 }: IDocNodeProps) => {
@@ -38,7 +39,7 @@ export const DocNodeProvider = ({
   // }, [selected])
 
   return (
-    <DocNodeContext.Provider value={{ selected, setSelected, slug }}>
+    <DocNodeContext.Provider value={{ selected, setSelected, slug, expanded }}>
       {children}
     </DocNodeContext.Provider>
   )
@@ -48,16 +49,23 @@ export function DocTreeNode({
   node,
   slug,
   level = 0,
+  expanded = false,
   className,
 }: IClassProps & {
   node: DocNode
   slug: string[]
   level?: number
+  expanded?: boolean
 }) {
   const [selected, setSelected] = useState(slug.join('/'))
 
   return (
-    <DocNodeProvider selected={selected} setSelected={setSelected} slug={slug}>
+    <DocNodeProvider
+      selected={selected}
+      setSelected={setSelected}
+      slug={slug}
+      expanded={expanded}
+    >
       <ul className={cn('flex flex-col', className)}>
         {node.children.map((child, index) => (
           <BaseDocTreeNode key={index} node={child} level={level} />
@@ -68,13 +76,15 @@ export function DocTreeNode({
 }
 
 function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
-  const { selected, setSelected, slug } = useContext(DocNodeContext)
+  const { selected, setSelected, slug, expanded } = useContext(DocNodeContext)
   const hasChildren = node.children && node.children.length > 0
 
   // auto determine which nodes are open by comparing the path at each level
   // with the node path at the same level. If they mirror each other, keep
   // all the nodes open
-  const [isOpen, setIsOpen] = useState(node.slug[level] === slug[level])
+  const [isOpen, setIsOpen] = useState(
+    expanded || node.slug[level] === slug[level]
+  )
 
   const name = node.title // .name.replace(/[\_\-]/g, ' ')
 

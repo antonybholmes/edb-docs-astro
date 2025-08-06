@@ -1,5 +1,5 @@
 ---
-import { COPYRIGHT } from '@/consts'
+import { SITE_TITLE } from '@/consts'
 import { VCenterRow } from './layout/v-center-row'
 import { ThemeToggle } from './theme-toggle'
 
@@ -8,7 +8,7 @@ const today = new Date()
 
 <footer class="flex flex-row items-center justify-between gap-4 py-8">
   <span class="text-foreground/50 text-xs">
-    &copy; {today.getFullYear()} {COPYRIGHT}. All rights reserved.</span
+    &copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.</span
   >
 
   <VCenterRow>

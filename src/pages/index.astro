@@ -1,8 +1,8 @@
 ---
+import Footer from '@/components/Footer.astro'
 import { DocDrawer } from '@/components/help/doc-drawer'
 import { DocTreeNode } from '@/components/help/doc-tree-node'
 import { BaseCol } from '@/components/layout/base-col'
-import { HCenterCol } from '@/components/layout/h-center-col'
 import BaseLayout from '@/layouts/BaseLayout.astro'
 import { buildNodeTree, DOCS_DIR } from '@/lib/docs'
 import { SITE_TITLE } from '../consts'
@@ -18,24 +18,26 @@ const [rootNode, _] = await buildNodeTree(DOCS_DIR)
     slot="small-header-left"
   />
 
-  <HCenterCol slot="main" className="mt-4 min-h-screen">
-    <div
-      class="grid w-full grow grid-cols-1 p-4 lg:w-4/5 lg:grid-cols-5 lg:gap-x-8"
+  <Fragment slot="main">
+    <aside
+      class="fixed top-20 bottom-25 left-[1%] hidden w-1/5 overflow-x-hidden overflow-y-auto lg:block xl:left-[10%] xl:w-1/6"
     >
-      <aside class="col-span-1 hidden flex-col lg:flex">
-        <div class="sticky top-24">
-          <DocTreeNode
-            node={rootNode}
-            slug={[]}
-            client:only="react"
-            className="text-sm"
-          />
-        </div>
-      </aside>
+      <DocTreeNode
+        node={rootNode}
+        slug={[]}
+        expanded={true}
+        client:only="react"
+        className="text-sm"
+      />
+    </aside>
 
-      <BaseCol className="docs col-span-4 flex grow flex-col text-sm">
-        {SITE_TITLE} Documentation
-      </BaseCol>
-    </div>
-  </HCenterCol>
+    <BaseCol
+      className="mx-auto mt-8 min-h-screen w-9/10 gap-y-8 lg:w-1/2 xl:w-2/5"
+    >
+      <div class="h-screen">
+        {SITE_TITLE} Documentation.
+      </div>
+      <Footer />
+    </BaseCol>
+  </Fragment>
 </BaseLayout>

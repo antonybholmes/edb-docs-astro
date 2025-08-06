@@ -61,12 +61,12 @@ function HelpAutocomplete({ className }: IClassProps) {
         <li key={li}>
           <a
             href={item.u}
-            className="hover:bg-muted/50 focus-visible:bg-muted/50 outline-none h-9  flex flex-row items-center px-3 gap-x-2"
+            className="hover:bg-muted/50 focus-visible:bg-muted/50 outline-none h-9 flex flex-row items-center px-3 gap-x-2"
             aria-label={item.t}
           >
             <SearchIcon className="shrink-0" />
 
-            <span className="font-medium">{item.t}</span>
+            <span className="font-medium text-sm">{item.t}</span>
 
             <span className="text-xs text-foreground/50 truncate">
               {item.d}
