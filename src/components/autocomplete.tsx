@@ -55,7 +55,7 @@ export function Autocomplete({
     <BaseCol
       id={id}
       data-open={_isOpen}
-      className={cn('relative group grow', className)}
+      className={cn('relative group', className)}
       ref={ref}
 
       // onBlur={() => {

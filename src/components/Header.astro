@@ -19,11 +19,7 @@ import { VCenterRow } from './layout/v-center-row'
           />
         </a>
       </VCenterRow>
-      <HelpAutocompleteQuery
-        className="min-w-0 grow"
-        client:only="react"
-        className="text-sm"
-      />
+      <HelpAutocompleteQuery className="grow" client:only="react" />
       <!-- <VCenterRow className="justify-end gap-4">
         <ThemeToggle client:only="react" />
         <slot name="small-header-right" />
