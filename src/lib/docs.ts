@@ -5,7 +5,6 @@ import matter from 'gray-matter'
 export const DOCS_DIR = './src/content/docs'
 
 export interface DocNode {
-  type: 'dir' | 'article'
   title: string
   description: string
   weight: number
@@ -28,10 +27,16 @@ export async function buildNodeTree(
 ): Promise<[DocNode, { slug: string; title: string }[]]> {
   const files = await globby(`${rootDir}/**/*.md`)
 
-  console.log(files)
+  const matterMap: Record<string, any> = {}
+  for (const file of files) {
+    const slug = file.replace(rootDir + '/', '').replace(/\.mdx?$/, '')
+
+    const raw = fs.readFileSync(file, 'utf-8')
+    const { data } = matter(raw)
+    matterMap[slug] = data
+  }
 
   const rootNode: DocNode = {
-    type: 'dir',
     title: '/',
     description: 'Documentation Root',
     weight: 0,
@@ -43,11 +48,10 @@ export async function buildNodeTree(
 
   for (const file of files) {
     const path = file //.replace('.md', '')
-    const slug = path.replace(rootDir + '/', '').split('/')
-
-    const raw = fs.readFileSync(file, 'utf-8')
-
-    const { data } = matter(raw)
+    const slug = path
+      .replace(rootDir + '/', '')
+      .replace(/\.mdx?$/, '')
+      .split('/')
 
     const subslugs = slug.map((_, i) => slug.slice(0, i + 1))
 
@@ -55,52 +59,56 @@ export async function buildNodeTree(
 
     // build directories
     for (const subslug of subslugs) {
-      const fullPath = rootDir + '/' + subslug.join('/')
+      const slugStr = subslug.join('/')
+      const fullPath = rootDir + '/' + slugStr
+      const indexFile = fullPath + '/index.json'
+      //const stats = fs.statSync(fullPath)
+      //const isDirectory = stats.isDirectory()
 
-      const stats = fs.statSync(fullPath)
-      const isDirectory = stats.isDirectory()
+      let dirName = fullPath.split('/').slice(-1)[0]
+      let weight = Number.MAX_VALUE
+      let description = ''
 
-      if (isDirectory) {
-        let dirName = fullPath.split('/').slice(-1)[0]
-        let weight = Number.MAX_VALUE
-
-        if (fs.existsSync(`${fullPath}/index.json`)) {
-          const indexFile = fs.readFileSync(`${fullPath}/index.json`, 'utf-8')
-
-          const indexData = JSON.parse(indexFile)
-
-          dirName = indexData.title || dirName
-          weight = indexData.index || weight
-        }
-
-        let nextNode: DocNode | undefined = currentNode.children.find(
-          (c) => c.title === dirName
-        )
-
-        if (!nextNode) {
-          nextNode = {
-            type: 'dir',
-            title: dirName,
-            description: '',
-            weight: weight,
-            slug: subslug,
-            children: [],
-          }
-          currentNode.children.push(nextNode)
-        }
-
-        currentNode = nextNode
+      if (fs.existsSync(indexFile)) {
+        console.log('Found index file for', indexFile)
+        const indexData = JSON.parse(fs.readFileSync(indexFile, 'utf-8'))
+        dirName = indexData.title || dirName
+        weight = indexData.weight || weight
       }
+
+      if (slugStr in matterMap) {
+        const m = matterMap[slugStr]!
+        description = m.description || description
+        dirName = m.title || dirName
+        weight = m.weight || weight
+      }
+
+      let nextNode: DocNode | undefined = currentNode.children.find(
+        (c) => c.title === dirName
+      )
+
+      if (!nextNode) {
+        nextNode = {
+          title: dirName,
+          description,
+          weight,
+          slug: subslug,
+          children: [],
+        }
+        currentNode.children.push(nextNode)
+      }
+
+      currentNode = nextNode
     }
 
-    currentNode.children.push({
-      type: 'article',
-      title: data.title || slug[slug.length - 1],
-      description: data.description || '',
-      weight: data.weight || Number.MAX_VALUE,
-      slug: slug.join('/').replace('.md', '').split('/'),
-      children: [],
-    })
+    // currentNode.children.push({
+    //   type: 'article',
+    //   title: data.title || slug[slug.length - 1],
+    //   description: data.description || '',
+    //   weight: data.weight || Number.MAX_VALUE,
+    //   slug: slug.join('/').replace('.md', '').split('/'),
+    //   children: [],
+    // })
   }
 
   let stack = [rootNode]
@@ -117,9 +125,9 @@ export async function buildNodeTree(
 
   while (stack.length > 0) {
     const node = stack.pop()!
-    if (node.type === 'article') {
-      orderedSlugs.push({ slug: node.slug.join('/'), title: node.title })
-    }
+
+    orderedSlugs.push({ slug: node.slug.join('/'), title: node.title })
+
     stack.push(...node.children.toReversed())
   }
 

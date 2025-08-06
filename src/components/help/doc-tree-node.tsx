@@ -108,7 +108,7 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
               : 'text-foreground/70 hover:text-foreground'
           )}
         >
-          {hasChildren ? (
+          {hasChildren && isSelected && (
             <button
               className="flex flex-row items-center grow justify-between h-full gap-x-2 pr-1"
               onClick={() => {
@@ -124,16 +124,37 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
                 {name}
               </span>
 
-              <VCenterRow className="justify-center w-4">
-                <ChevronRightIcon
-                  className="trans-transform"
-                  style={{
-                    transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-                  }}
-                />
-              </VCenterRow>
+              <ChevronRightIcon
+                className="trans-transform"
+                style={{
+                  transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                }}
+              />
             </button>
-          ) : (
+          )}
+
+          {hasChildren && !isSelected && (
+            <a
+              href={'/' + node.slug.join('/')}
+              className="flex flex-row items-center justify-start grow h-full"
+              style={{
+                paddingLeft: `${level * 0.5 + 0.5}rem`,
+              }}
+            >
+              <span className="flex flex-row items-center justify-start grow">
+                {name}
+              </span>
+
+              <ChevronRightIcon
+                className="trans-transform"
+                style={{
+                  transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+                }}
+              />
+            </a>
+          )}
+
+          {!hasChildren && (
             <a
               href={'/' + node.slug.join('/')}
               className="flex flex-row items-center justify-start grow h-full"

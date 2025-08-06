@@ -4,6 +4,7 @@ weight: 20
 authors:
   - 'Antony Holmes'
 added: '2025-07-01'
+description: 'Creating heatmaps to visualize tabular data.'
 keywords:
   - 'matcalc'
   - 'heatmap'

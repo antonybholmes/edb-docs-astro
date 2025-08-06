@@ -3,19 +3,21 @@ import BaseLayout from '@layouts/BaseLayout.astro'
 
 import { BaseCol } from '@layout/base-col'
 
-import { ThemeLink } from '@components/link/theme-link'
-
-import { VScrollPanel } from '../v-scroll-panel'
 import { DocCrumb } from './doc-crumb'
 
 import type { DocNode } from '@/lib/docs'
+import { TableOfContents } from '../toc'
+import { DocDrawer } from './doc-drawer'
+import { DocTreeNode } from './doc-tree-node'
+import { TocMenu } from './toc-menu'
 
 interface Props {
+  rootNode: DocNode
   node: DocNode
-  topicTree: DocNode
+  slug: string[]
 }
 
-const { node, topicTree } = Astro.props
+const { node, rootNode, slug } = Astro.props
 
 //const filePath = `/${path.join('/')}`
 
@@ -35,8 +37,6 @@ const { node, topicTree } = Astro.props
 
 // for this path, find the topic children
 
-const pathChildren: DocNode[][] = []
-
 // if (node.fullPath.length > 0) {
 //   let tm = topicTree
 
@@ -50,56 +50,60 @@ const pathChildren: DocNode[][] = []
 ---
 
 <BaseLayout title={node.title} bg="bg-white">
-  <article
-    class="flex h-screen flex-col gap-x-8 gap-y-3 lg:grid lg:grid-cols-4"
-    slot="main"
-  >
-    <BaseCol className="px-1">
-      <VScrollPanel className="hidden lg:flex lg:grow">
-        <BaseCol className="hidden justify-start gap-y-4 py-4 text-xs lg:flex">
-          <ul>
-            <!-- {
-              topicTree.children.map((t) => {
-                return (
-                  <HelpTreeNode
-                    node={t}
-                    currentNode={node}
-                    level={0}
-                    client:only="react"
-                  />
-                )
-              })
-            } -->
-          </ul>
-        </BaseCol>
-      </VScrollPanel>
-    </BaseCol>
+  <DocDrawer
+    node={rootNode}
+    slug={slug}
+    client:only="react"
+    slot="small-header-left"
+  />
 
-    <VScrollPanel
-      className="grow gap-y-4 pt-2 lg:col-span-3"
-      innerClassName="gap-y-4"
+  <TocMenu slot="small-header-bottom" client:only="react" />
+
+  <Fragment slot="main">
+    <aside
+      class="fixed top-20 bottom-25 left-[1%] hidden w-1/5 overflow-x-hidden overflow-y-auto lg:block xl:left-[10%] xl:w-1/6"
     >
-      <DocCrumb node={node} pathChildren={pathChildren} client:only="react" />
+      <DocTreeNode
+        node={rootNode}
+        slug={slug}
+        client:only="react"
+        className="text-sm"
+      />
+    </aside>
+
+    <BaseCol
+      className="mx-auto mt-8 min-h-screen w-9/10 gap-y-8 lg:w-1/2 xl:w-2/5"
+    >
+      <DocCrumb slug={slug} />
 
       <h1 class="text-xl font-bold">{node.title}</h1>
 
-      <ol class="flex shrink-0 flex-col gap-y-0.5 text-sm md:gap-y-8 lg:pr-8">
+      <ol class="flex grid shrink-0 grid-cols-2 gap-8 text-sm">
         {
-          pathChildren[pathChildren.length - 1]!.map((c) => {
+          node.children.map((c) => {
             return (
-              <li class="border-border flex flex-col gap-y-1 border-b pb-8">
-                <ThemeLink
+              <li>
+                <a
                   href={c.slug.join('/')}
-                  className="font-bold text-base"
+                  class="border-border rounded-theme flex h-full flex-col gap-y-1 border p-8 transition-shadow duration-300 ease-in-out hover:shadow-sm"
                 >
-                  {c.title}
-                </ThemeLink>
-                <p class="text-foreground/70 text-sm">{c.description}</p>
+                  <span class="font-semibold">{c.title}</span>
+
+                  <span class="text-foreground/70 text-sm">
+                    {c.description}
+                  </span>
+                </a>
               </li>
             )
           })
         }
       </ol>
-    </VScrollPanel>
-  </article>
+    </BaseCol>
+
+    <aside
+      class="fixed top-20 right-[1%] bottom-25 hidden w-1/5 overflow-x-hidden overflow-y-auto lg:block xl:right-[10%] xl:w-1/6"
+    >
+      <TableOfContents title="On This Page" client:only="react" />
+    </aside>
+  </Fragment>
 </BaseLayout>

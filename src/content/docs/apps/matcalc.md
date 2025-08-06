@@ -1,10 +1,11 @@
 ---
-title: 'Analysis'
+title: 'Matcalc'
 weight: 10
 description: 'Matcalc allows you to analyse and plot gene expression and other biological data.'
 authors:
   - 'Antony Holmes'
 added: '2025-07-01'
+
 keywords:
   - 'matcalc'
   - 'analysis'

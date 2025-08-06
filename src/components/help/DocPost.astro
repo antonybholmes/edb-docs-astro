@@ -12,6 +12,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 import Footer from '../Footer.astro'
 import { BaseCol } from '../layout/base-col'
 import { TableOfContents } from '../toc'
+import { DocCrumb } from './doc-crumb'
 import { DocDrawer } from './doc-drawer'
 import { DocTreeNode } from './doc-tree-node'
 import { TocMenu } from './toc-menu'
@@ -83,6 +84,8 @@ const { Content, headings } = await render(post)
     <BaseCol
       className="mx-auto mt-8 min-h-screen w-9/10 gap-y-8 lg:w-1/2 xl:w-2/5"
     >
+      <DocCrumb slug={slug} />
+
       <MarkdownContent className="docs flex grow flex-col text-sm">
         <Content />
       </MarkdownContent>

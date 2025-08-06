@@ -1,4 +1,5 @@
 ---
+import DocIndex from '@/components/help/DocIndex.astro'
 import DocPost from '@/components/help/DocPost.astro'
 import { buildNodeTree, DOCS_DIR, type DocNode } from '@/lib/docs'
 import { getCollection, type CollectionEntry } from 'astro:content'
@@ -6,39 +7,80 @@ import { getCollection, type CollectionEntry } from 'astro:content'
 export async function getStaticPaths() {
   const [rootNode, orderedSlugs] = await buildNodeTree(DOCS_DIR)
 
-  console.log(orderedSlugs)
+  const routes: {
+    params: { slug: string }
+    props: {
+      post?: CollectionEntry<'docs'>
+      node?: DocNode
+      rootNode: DocNode
+      nextSlug?: { slug: string; title: string }
+      prevSlug?: { slug: string; title: string }
+      type: 'page' | 'auto'
+    }
+  }[] = []
+
+  const stack: DocNode[] = [rootNode]
+
+  while (stack.length) {
+    const node = stack.pop()!
+
+    if (node.children.length > 0) {
+      const idx = orderedSlugs.findIndex((s) => s.slug === node.slug.join('/'))
+
+      const nextSlug = orderedSlugs[idx + 1]
+      const prevSlug = orderedSlugs[idx - 1]
+
+      routes.push({
+        params: { slug: node.slug.join('/') },
+        props: { node, rootNode, type: 'auto', nextSlug, prevSlug },
+      })
+    }
+
+    for (const child of node.children.slice().reverse()) {
+      stack.push(child)
+    }
+  }
 
   const posts = await getCollection('docs')
-  return posts.map((post) => {
-    console.log(post.id)
 
+  for (const post of posts) {
     const idx = orderedSlugs.findIndex((s) => s.slug === post.id)
 
     const nextSlug = orderedSlugs[idx + 1]
     const prevSlug = orderedSlugs[idx - 1]
 
-    return {
+    routes.push({
       params: { slug: post.id },
-      props: { post, rootNode, nextSlug, prevSlug },
-    }
-  })
+      props: { post, rootNode, nextSlug, prevSlug, type: 'page' },
+    })
+  }
+
+  return routes
 }
 
 type Props = {
-  post: CollectionEntry<'docs'>
+  post?: CollectionEntry<'docs'>
+  node?: DocNode
   rootNode: DocNode
   nextSlug?: { slug: string; title: string }
   prevSlug?: { slug: string; title: string }
+  type: 'page' | 'auto'
 }
 
 const { slug } = Astro.params
-const { post, rootNode, nextSlug, prevSlug } = Astro.props
+const { post, node, rootNode, nextSlug, prevSlug, type } = Astro.props
 ---
 
-<DocPost
-  post={post}
-  rootNode={rootNode}
-  slug={slug.split('/')}
-  nextSlug={nextSlug}
-  prevSlug={prevSlug}
-/>
+{
+  type === 'auto' ? (
+    <DocIndex rootNode={rootNode} node={node!} slug={slug.split('/')} />
+  ) : (
+    <DocPost
+      post={post!}
+      rootNode={rootNode}
+      slug={slug.split('/')}
+      nextSlug={nextSlug}
+      prevSlug={prevSlug}
+    />
+  )
+}
