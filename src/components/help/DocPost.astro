@@ -21,8 +21,8 @@ interface Props {
   post: CollectionEntry<'docs'>
   rootNode: DocNode
   slug: string[]
-  nextSlug?: { slug: string; title: string }
-  prevSlug?: { slug: string; title: string }
+  nextSlug?: DocNode
+  prevSlug?: DocNode
   //topicTree: ITopicTree
 }
 
@@ -94,7 +94,7 @@ const { Content, headings } = await render(post)
         <div>
           {
             prevSlug && (
-              <a href={`/${prevSlug.slug}`} class={LINK_CLS}>
+              <a href={`/docs/${prevSlug.slug.join('/')}`} class={LINK_CLS}>
                 <ArrowLeft className={ARROW_CLS} strokeWidth={3} />
 
                 <span class="text-left">
@@ -112,7 +112,7 @@ const { Content, headings } = await render(post)
           {
             nextSlug && (
               <a
-                href={`/${nextSlug.slug}`}
+                href={`/docs/${nextSlug.slug.join('/')}`}
                 class={cn(LINK_CLS, 'justify-end text-right')}
               >
                 <span class="text-right">

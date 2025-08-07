@@ -90,7 +90,69 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
 
   const isSelected = selected === node.slug.join('/')
 
-  //const slug = getSlug(node.path.join('/'))
+  function Content() {
+    if (hasChildren) {
+      if (isSelected) {
+        return (
+          <button
+            className="flex flex-row items-center grow justify-between h-full gap-x-2 pr-2"
+            onClick={() => {
+              setIsOpen(!isOpen)
+
+              setSelected(node.slug.join('/'))
+            }}
+            style={{
+              paddingLeft: `${level * 0.5 + 0.5}rem`,
+            }}
+          >
+            <span className="flex flex-row items-center justify-start grow">
+              {name}
+            </span>
+
+            <ChevronRightIcon
+              className="trans-transform"
+              style={{
+                transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+              }}
+            />
+          </button>
+        )
+      } else {
+        return (
+          <a
+            href={`/docs/${node.slug.join('/')}`}
+            className="flex flex-row items-center justify-start grow h-full pr-2"
+            style={{
+              paddingLeft: `${level * 0.5 + 0.5}rem`,
+            }}
+          >
+            <span className="flex flex-row items-center justify-start grow">
+              {name}
+            </span>
+
+            <ChevronRightIcon
+              className="trans-transform"
+              style={{
+                transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
+              }}
+            />
+          </a>
+        )
+      }
+    } else {
+      return (
+        <a
+          href={`/docs/${node.slug.join('/')}`}
+          className="flex flex-row items-center justify-start grow h-full"
+          style={{
+            paddingLeft: `${level * 0.5 + 0.5}rem`,
+          }}
+        >
+          {name}
+        </a>
+      )
+    }
+  }
 
   return (
     <li className="flex flex-col gap-y-0.5 ">
@@ -108,63 +170,7 @@ function BaseDocTreeNode({ level, node }: { level: number; node: DocNode }) {
               : 'text-foreground/70 hover:text-foreground'
           )}
         >
-          {hasChildren && isSelected && (
-            <button
-              className="flex flex-row items-center grow justify-between h-full gap-x-2 pr-1"
-              onClick={() => {
-                setIsOpen(!isOpen)
-
-                setSelected(node.slug.join('/'))
-              }}
-              style={{
-                paddingLeft: `${level * 0.5 + 0.25}rem`,
-              }}
-            >
-              <span className="flex flex-row items-center justify-start grow">
-                {name}
-              </span>
-
-              <ChevronRightIcon
-                className="trans-transform"
-                style={{
-                  transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-                }}
-              />
-            </button>
-          )}
-
-          {hasChildren && !isSelected && (
-            <a
-              href={'/' + node.slug.join('/')}
-              className="flex flex-row items-center justify-start grow h-full"
-              style={{
-                paddingLeft: `${level * 0.5 + 0.5}rem`,
-              }}
-            >
-              <span className="flex flex-row items-center justify-start grow">
-                {name}
-              </span>
-
-              <ChevronRightIcon
-                className="trans-transform"
-                style={{
-                  transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)',
-                }}
-              />
-            </a>
-          )}
-
-          {!hasChildren && (
-            <a
-              href={'/' + node.slug.join('/')}
-              className="flex flex-row items-center justify-start grow h-full"
-              style={{
-                paddingLeft: `${level * 0.5 + 0.5}rem`,
-              }}
-            >
-              {name}
-            </a>
-          )}
+          <Content />
         </VCenterRow>
       </VCenterRow>
       {node && node.children && isOpen && (

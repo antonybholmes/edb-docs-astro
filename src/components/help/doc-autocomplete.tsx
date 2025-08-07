@@ -17,7 +17,7 @@ export interface SearchIndexNode {
   u: string // url
 }
 
-function HelpAutocomplete({ className }: IClassProps) {
+function DocAutocomplete({ className }: IClassProps) {
   const [searchResults, setResults] = useState<SearchIndexNode[]>([])
 
   // Fetch search data from /search.json
@@ -78,10 +78,10 @@ function HelpAutocomplete({ className }: IClassProps) {
   )
 }
 
-export function HelpAutocompleteQuery({ className }: IClassProps) {
+export function DocAutocompleteQuery({ className }: IClassProps) {
   return (
     <QCP>
-      <HelpAutocomplete className={className} />
+      <DocAutocomplete className={className} />
     </QCP>
   )
 }

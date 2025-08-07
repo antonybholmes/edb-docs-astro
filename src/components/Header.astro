@@ -1,6 +1,6 @@
 ---
 import { SITE_TITLE } from '../consts'
-import { HelpAutocompleteQuery } from './help/help-autocomplete'
+import { DocAutocompleteQuery } from './help/doc-autocomplete'
 import { HCenterRow } from './layout/h-center-row'
 import { VCenterRow } from './layout/v-center-row'
 ---
@@ -19,7 +19,7 @@ import { VCenterRow } from './layout/v-center-row'
           />
         </a>
       </VCenterRow>
-      <HelpAutocompleteQuery className="grow" client:only="react" />
+      <DocAutocompleteQuery className="grow text-sm" client:only="react" />
       <!-- <VCenterRow className="justify-end gap-4">
         <ThemeToggle client:only="react" />
         <slot name="small-header-right" />
@@ -43,7 +43,7 @@ import { VCenterRow } from './layout/v-center-row'
     </h2>
 
     <HCenterRow className="col-span-2 hidden lg:flex">
-      <HelpAutocompleteQuery className="w-3/4" client:only="react" />
+      <DocAutocompleteQuery className="w-2/3 text-sm" client:only="react" />
     </HCenterRow>
 
     <!-- <VCenterRow className="justify-end gap-4">

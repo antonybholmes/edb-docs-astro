@@ -84,7 +84,7 @@ const { node, rootNode, slug } = Astro.props
             return (
               <li>
                 <a
-                  href={c.slug.join('/')}
+                  href={`/docs/${c.slug.join('/')}`}
                   class="border-border rounded-theme flex h-full flex-col gap-y-1 border p-8 transition-shadow duration-300 ease-in-out hover:shadow-sm"
                 >
                   <span class="font-semibold">{c.title}</span>

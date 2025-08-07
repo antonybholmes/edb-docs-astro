@@ -17,7 +17,7 @@ export function DocCrumb({ slug }: { slug: string[] }) {
 
             <BaseLink
               data-underline="hover"
-              href={`/${getUrlFriendlyTag(slug.slice(0, i + 1).join('/'))}`}
+              href={`/docs/${getUrlFriendlyTag(slug.slice(0, i + 1).join('/'))}`}
               aria-label={`Goto help section ${p}`}
               style={{
                 fontWeight: i === slug.length - 1 ? 600 : 'normal',

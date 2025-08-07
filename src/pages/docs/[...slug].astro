@@ -13,38 +13,26 @@ export async function getStaticPaths() {
       post?: CollectionEntry<'docs'>
       node?: DocNode
       rootNode: DocNode
-      nextSlug?: { slug: string; title: string }
-      prevSlug?: { slug: string; title: string }
+      nextSlug?: DocNode
+      prevSlug?: DocNode
       type: 'page' | 'auto'
     }
   }[] = []
 
-  const stack: DocNode[] = [rootNode]
+  for (const [idx, node] of orderedSlugs.entries()) {
+    const nextSlug = orderedSlugs[idx + 1]
+    const prevSlug = orderedSlugs[idx - 1]
 
-  while (stack.length) {
-    const node = stack.pop()!
-
-    if (node.children.length > 0) {
-      const idx = orderedSlugs.findIndex((s) => s.slug === node.slug.join('/'))
-
-      const nextSlug = orderedSlugs[idx + 1]
-      const prevSlug = orderedSlugs[idx - 1]
-
-      routes.push({
-        params: { slug: node.slug.join('/') },
-        props: { node, rootNode, type: 'auto', nextSlug, prevSlug },
-      })
-    }
-
-    for (const child of node.children.slice().reverse()) {
-      stack.push(child)
-    }
+    routes.push({
+      params: { slug: node.slug.join('/') },
+      props: { node, rootNode, type: 'auto', nextSlug, prevSlug },
+    })
   }
 
   const posts = await getCollection('docs')
 
   for (const post of posts) {
-    const idx = orderedSlugs.findIndex((s) => s.slug === post.id)
+    const idx = orderedSlugs.findIndex((s) => s.slug.join('/') === post.id)
 
     const nextSlug = orderedSlugs[idx + 1]
     const prevSlug = orderedSlugs[idx - 1]
@@ -55,6 +43,11 @@ export async function getStaticPaths() {
     })
   }
 
+  console.log(
+    'Generated routes:',
+    routes.map((r) => r.params.slug)
+  )
+
   return routes
 }
 
@@ -62,8 +55,8 @@ type Props = {
   post?: CollectionEntry<'docs'>
   node?: DocNode
   rootNode: DocNode
-  nextSlug?: { slug: string; title: string }
-  prevSlug?: { slug: string; title: string }
+  nextSlug?: DocNode
+  prevSlug?: DocNode
   type: 'page' | 'auto'
 }
 

@@ -12,6 +12,14 @@ export default defineConfig({
   site: 'https://edbdocs.rdf-lab.org',
   compressHTML: true,
   output: 'static',
+  // i18n: {
+  //   locales: ['en'],
+  //   defaultLocale: 'en',
+  //   routing: {
+  //     prefixDefaultLocale: true,
+  //     redirectToDefaultLocale: true,
+  //   },
+  // },
   integrations: [mdx(), sitemap(), react()],
   // markdown: {
   //   // Applied to .md and .mdx files

@@ -94,7 +94,7 @@ export function Autocomplete({
         data-open={_isOpen}
         //data-focus={focus}
         className={`absolute  
-          rounded-theme border border-border/50 data-[open=true]:shadow-sm bg-background
+          rounded-theme border border-border/50 data-[open=true]:shadow-lg bg-background
           w-full min-h-9 data-[open=true]:pt-11 data-[open=true]:pb-3 
           z-10 data-[open=true]:z-30 top-0 
           overflow-hidden`}

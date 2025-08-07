@@ -24,7 +24,7 @@ export function sortNode(node: DocNode) {
 
 export async function buildNodeTree(
   rootDir: string
-): Promise<[DocNode, { slug: string; title: string }[]]> {
+): Promise<[DocNode, DocNode[]]> {
   const files = await globby(`${rootDir}/**/*.md`)
 
   const matterMap: Record<string, any> = {}
@@ -38,7 +38,7 @@ export async function buildNodeTree(
 
   const rootNode: DocNode = {
     title: '/',
-    description: 'Documentation Root',
+    description: '',
     weight: 0,
     slug: [],
     children: [],
@@ -119,17 +119,19 @@ export async function buildNodeTree(
     stack.push(...node.children)
   }
 
-  const orderedSlugs: { slug: string; title: string }[] = []
+  const orderedSlugs: DocNode[] = []
 
-  stack = [rootNode]
+  stack = [...rootNode.children.slice().reverse()]
 
   while (stack.length > 0) {
     const node = stack.pop()!
 
-    orderedSlugs.push({ slug: node.slug.join('/'), title: node.title })
+    orderedSlugs.push(node)
 
-    stack.push(...node.children.toReversed())
+    stack.push(...node.children.slice().reverse())
   }
+
+  console.log('Ordered slugs:', orderedSlugs)
 
   return [rootNode, orderedSlugs]
 }
