@@ -7,7 +7,7 @@ import { BaseLink } from '../link/base-link'
 
 export function DocCrumb({ slug }: { slug: string[] }) {
   return (
-    <VCenterRow className="flex gap-x-2 py-2 text-sm">
+    <VCenterRow className="hidden md:flex gap-x-2 py-2 text-sm">
       {slug.map((p, i) => {
         const url = slug.slice(0, i + 1).join('/')
 

@@ -4,6 +4,7 @@ import Header from '@components/Header.astro'
 import { cn } from '@lib/shadcn-utils'
 
 import { type ILayoutProps } from '@interfaces/layout-props'
+import Footer from '@/components/Footer.astro'
 
 interface Props extends ILayoutProps {}
 
@@ -35,6 +36,6 @@ const cls = cn(BODY_CLS, bg)
     <slot name="main" />
     <!-- <slot name="footer" /> -->
 
-    <!-- <Footer /> -->
+    <Footer />
   </body>
 </html>

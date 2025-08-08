@@ -43,11 +43,6 @@ export async function getStaticPaths() {
     })
   }
 
-  console.log(
-    'Generated routes:',
-    routes.map((r) => r.params.slug)
-  )
-
   return routes
 }
 

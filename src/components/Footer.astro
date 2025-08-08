@@ -6,7 +6,9 @@ import { ThemeToggle } from './theme-toggle'
 const today = new Date()
 ---
 
-<footer class="flex flex-row items-center justify-between gap-4 py-8">
+<footer
+  class="mx-auto flex w-4/5 flex-col items-center justify-between gap-4 py-8 sm:flex-row"
+>
   <span class="text-foreground/50 text-xs">
     &copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.</span
   >
