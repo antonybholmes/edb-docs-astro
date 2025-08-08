@@ -9,7 +9,6 @@ import { render } from 'astro:content'
 import type { DocNode } from '@/lib/docs'
 import { cn } from '@/lib/shadcn-utils'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import Footer from '../Footer.astro'
 import { BaseCol } from '../layout/base-col'
 import { TableOfContents } from '../toc'
 import { DocCrumb } from './doc-crumb'
@@ -71,7 +70,7 @@ const { Content, headings } = await render(post)
 
   <main
     slot="main"
-    class="mx-auto grid min-h-screen w-4/5 grid-cols-1 gap-8 lg:grid-cols-4"
+    class="mx-auto grid min-h-screen w-2/3 grid-cols-1 gap-8 lg:grid-cols-5"
   >
     <aside
       class="sticky top-20 hidden h-screen overflow-x-hidden overflow-y-auto lg:block"
@@ -85,7 +84,7 @@ const { Content, headings } = await render(post)
       />
     </aside>
 
-    <BaseCol className="min-h-screen gap-y-8 lg:col-span-2">
+    <BaseCol className="min-h-screen gap-y-8 lg:col-span-3">
       <DocCrumb slug={slug} />
 
       <MarkdownContent className="docs flex grow flex-col text-sm">

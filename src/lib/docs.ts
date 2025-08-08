@@ -37,7 +37,7 @@ export async function buildNodeTree(
   }
 
   const rootNode: DocNode = {
-    title: '/',
+    title: 'Docs',
     description: '',
     weight: 0,
     slug: [],

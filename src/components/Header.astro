@@ -5,7 +5,10 @@ import { HCenterRow } from './layout/h-center-row'
 import { VCenterRow } from './layout/v-center-row'
 ---
 
-<header class="bg-background/25 sticky top-0 z-40 px-2 py-4 backdrop-blur-md">
+<header
+  id="header"
+  class="bg-background/25 trans-color sticky top-0 z-40 border-b border-transparent px-2 py-4 backdrop-blur-md"
+>
   <nav class="flex flex-col gap-4 lg:hidden">
     <VCenterRow className="justify-between gap-4">
       <VCenterRow className="gap-3">
@@ -51,3 +54,19 @@ import { VCenterRow } from './layout/v-center-row'
     </VCenterRow> -->
   </nav>
 </header>
+
+<script>
+  // Run in browser after hydration
+
+  const header = document.getElementById('header')!
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 0) {
+      header.classList.remove('border-transparent')
+      header.classList.add('border-border/50')
+    } else {
+      header.classList.remove('border-border/50')
+      header.classList.add('border-transparent')
+    }
+  })
+</script>
